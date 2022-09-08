@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,600;0,800;1,100;1,400&display=swap");
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: rgb(255, 83, 118);
+}
+
+body {
+  background-color: whitesmoke;
+  color: rgb(99, 99, 99);
+}
+
+.navbar {
+  background-color: white;
+  padding: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+}
+.navbar p {
+  font-size: 1rem;
+  margin-left: 1.5rem;
+  font-weight: 600;
+}
+.header-logo {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+.header-logo span {
+  color: black;
+}
+.user-login_area {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.user-login_area input {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  width: 7rem;
+  border-radius: 12rem;
+  border: 2px solid var(--primary-color);
+}
+.user-login_area input:focus-within {
+  background-color: black;
+  color: white;
+}
+
+.user-login_area button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+/* main */
+.app {
+  max-width: 1000px;
+  margin: auto;
+}
+.balance {
+  padding: 3rem;
+  display: flex;
+  justify-content: space-between;
+}
+.balance .balance-status {
+  line-height: 2rem;
+}
+.balance-status p:first-child {
+  font-size: 2rem;
+}
+.balance .available-balance {
+  font-size: 3rem;
+}
+/* main */
