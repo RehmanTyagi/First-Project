@@ -121,48 +121,48 @@
 //   },
 // };
 
-// document
-//   .querySelector(".answer-poll")
-//   .addEventListener("click", poll.registerNewAnswer.bind(poll));
+document
+  .querySelector(".answer-poll")
+  .addEventListener("click", poll.registerNewAnswer.bind(poll));
 
-// poll.resultDisplay.call({ answers: [2, 3, 4, 5, 6] });
-// poll.resultDisplay.call({ answers: [2, 3, 4, 5, 6] }, "string");
+poll.resultDisplay.call({ answers: [2, 3, 4, 5, 6] });
+poll.resultDisplay.call({ answers: [2, 3, 4, 5, 6] }, "string");
 
-// // last challenge of closures
+// last challenge of closures
 
-// (function () {
-//   const header = document.querySelector("h1");
-//   header.style.color = "red";
+(function () {
+  const header = document.querySelector("h1");
+  header.style.color = "red";
 
-//   document.body.addEventListener("click", function () {
-//     header.style.color = "blue";
-//   });
-// })();
+  document.body.addEventListener("click", function () {
+    header.style.color = "blue";
+  });
+})();
 
+Arrays
+const accountHistory = [
+  200, 100, 4000, 2200, 1200, -200, 0, -3000, 444, -22, -1112,
+];
 // Arrays
-// const accountHistory = [
-//   200, 100, 4000, 2200, 1200, -200, 0, -3000, 444, -22, -1112,
-// ];
-// // Arrays
-// const balanceHistoryEl = document.querySelector(".balance-history_section");
-// for (const transaction of accountHistory) {
-//   if (transaction > 0) {
-//     const printDetails = `You have deposit $ ${transaction}`;
-//     const transactionEl = document.createElement("div");
-//     transactionEl.textContent = printDetails;
-//     balanceHistoryEl.append(transactionEl);
-//   } else {
-//     const printDetails = `You have withdrawan $ ${transaction}`;
-//     const transactionEl = document.createElement("div");
-//     transactionEl.textContent = printDetails;
-//     balanceHistoryEl.append(transactionEl);
-//   }
-// }
+const balanceHistoryEl = document.querySelector(".balance-history_section");
+for (const transaction of accountHistory) {
+  if (transaction > 0) {
+    const printDetails = `You have deposit $ ${transaction}`;
+    const transactionEl = document.createElement("div");
+    transactionEl.textContent = printDetails;
+    balanceHistoryEl.append(transactionEl);
+  } else {
+    const printDetails = `You have withdrawan $ ${transaction}`;
+    const transactionEl = document.createElement("div");
+    transactionEl.textContent = printDetails;
+    balanceHistoryEl.append(transactionEl);
+  }
+}
 
-// // total balance
-// document.querySelector(
-//   ".total-balance"
-// ).textContent = `Remaining Balance: $${accountHistory.reduce((sum, value) => {
-//   return sum + value;
-// }, 0)} `;
-// // total balance
+// total balance
+document.querySelector(
+  ".total-balance"
+).textContent = `Remaining Balance: $${accountHistory.reduce((sum, value) => {
+  return sum + value;
+}, 0)} `;
+// total balance
