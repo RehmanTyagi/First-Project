@@ -5,10 +5,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 :root {
   --primary-color: rgb(255, 83, 118);
+  --secondary-color: linear-gradient(to top, #27dd45, #1cbd72);
+  --white-color: white;
 }
 
 body {
@@ -17,12 +20,11 @@ body {
 }
 
 .navbar {
-  background-color: white;
+  background-color: var(--white-color);
   padding: 0.8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: "Poppins", sans-serif;
 }
 .navbar p {
   font-size: 1rem;
@@ -51,27 +53,35 @@ body {
 }
 .user-login_area input:focus-within {
   background-color: black;
-  color: white;
+  color: var(--white-color);
 }
 
 .user-login_area button {
   padding: 0.5rem 1rem;
   border: none;
   background-color: var(--primary-color);
-  color: white;
+  color: var(--white-color);
   cursor: pointer;
   border-radius: 3px;
 }
 
 /* main */
 .app {
-  max-width: 1000px;
-  margin: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 20rem 1fr;
+  height: 80vh;
+  gap: 1rem;
 }
 .balance {
   padding: 3rem;
   display: flex;
   justify-content: space-between;
+}
+.balance,
+.in_out__interest {
+  grid-column: 1/3;
 }
 .balance .balance-status {
   line-height: 2rem;
@@ -81,5 +91,77 @@ body {
 }
 .balance .available-balance {
   font-size: 3rem;
+}
+.movements {
+  overflow-y: scroll;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+.transaction-movements {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--white-color);
+  padding: 1.5rem;
+  margin: 0.1rem;
+}
+
+.transaction-type {
+  padding: 0.5rem;
+  color: var(--white-color);
+  margin-right: 1rem;
+  border-radius: 5px;
+}
+.Deposit {
+  background: linear-gradient(to top, #27dd45, #1cbd72);
+}
+.Withdrawal {
+  background: linear-gradient(to top, #dd2727, #bd1c1c);
+}
+.feature {
+  background-color: var(--white-color);
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 1rem;
+}
+.feature input {
+  padding: 0.5rem;
+  text-align: center;
+}
+.feature .user-buttons {
+  padding: 1rem 2rem;
+  font-weight: 600;
+  grid-row: 3/1;
+  grid-column: 2;
+  height: fit-content;
+  margin: auto 5rem;
+  cursor: pointer;
+}
+.feature h3 {
+  margin-bottom: 1rem;
+}
+.inputs {
+  display: flex;
+  gap: 1.5rem;
+  text-align: center;
+}
+.in_out__interest {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user-cashflow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.sort-btn {
+  display: flex;
+  margin-left: 2rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  color: var(--white-color);
+  background: var(--primary-color);
 }
 /* main */

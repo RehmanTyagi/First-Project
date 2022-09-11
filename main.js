@@ -121,48 +121,108 @@
 //   },
 // };
 
-document
-  .querySelector(".answer-poll")
-  .addEventListener("click", poll.registerNewAnswer.bind(poll));
+// document
+//   .querySelector(".answer-poll")
+//   .addEventListener("click", poll.registerNewAnswer.bind(poll));
 
-poll.resultDisplay.call({ answers: [2, 3, 4, 5, 6] });
-poll.resultDisplay.call({ answers: [2, 3, 4, 5, 6] }, "string");
+// poll.resultDisplay.call({ answers: [2, 3, 4, 5, 6] });
+// poll.resultDisplay.call({ answers: [2, 3, 4, 5, 6] }, "string");
 
-// last challenge of closures
+// // last challenge of closures
 
-(function () {
-  const header = document.querySelector("h1");
-  header.style.color = "red";
+// (function () {
+//   const header = document.querySelector("h1");
+//   header.style.color = "red";
 
-  document.body.addEventListener("click", function () {
-    header.style.color = "blue";
+//   document.body.addEventListener("click", function () {
+//     header.style.color = "blue";
+//   });
+// })();
+
+// Arrays;
+// const accountHistory = [
+//   200, 100, 4000, 2200, 1200, -200, 0, -3000, 444, -22, -1112,
+// ];
+// // Arrays
+// const balanceHistoryEl = document.querySelector(".balance-history_section");
+// for (const transaction of accountHistory) {
+//   if (transaction > 0) {
+//     const printDetails = `You have deposit $ ${transaction}`;
+//     const transactionEl = document.createElement("div");
+//     transactionEl.textContent = printDetails;
+//     balanceHistoryEl.append(transactionEl);
+//   } else {
+//     const printDetails = `You have withdrawan $ ${transaction}`;
+//     const transactionEl = document.createElement("div");
+//     transactionEl.textContent = printDetails;
+//     balanceHistoryEl.append(transactionEl);
+//   }
+// }
+
+// // total balance
+// document.querySelector(
+//   ".total-balance"
+// ).textContent = `Remaining Balance: $${accountHistory.reduce((sum, value) => {
+//   return sum + value;
+// }, 0)} `;
+// total balance
+
+// Bankist Project
+
+// Elements
+const bankistApp = document.querySelector(".app");
+const balance = document.querySelector(".balance");
+const movementsContainer = document.querySelector(".movements");
+const userActions = document.querySelector(".user-actions");
+const in_out__interest = document.querySelector(".in_out__interest");
+// Elements
+
+// users
+const accountOne = {
+  user: "Rehman",
+  movements: [
+    200, 100, 400, -499, -993, 22, 1222, -2999, 35000, 3933, -222, -111, -2300,
+    -2000, 34000,
+  ],
+  interest: 1.5,
+  pin: 555,
+};
+const accountTwo = {
+  user: "shoyaib",
+  movements: [
+    200, 100, 4800, -4199, -9913, 22, 12522, -29799, 3500, 39334, -22, -11,
+    -200, -200, 3400,
+  ],
+  interest: 1.5,
+  pin: 9971,
+};
+const accountThree = {
+  user: "Mannan",
+  movements: [
+    500, 100, 600, -4909, -9093, 202, 122, -29909, 3500, 333, -2022, -1011,
+    -23100, -20000, 340000,
+  ],
+  interest: 1.5,
+  pin: 1200,
+};
+
+const movementsFunc = function (movements) {
+  movements.forEach(function (mov, index) {
+    const transactionType = mov > 0 ? "Deposit" : "Withdrawal";
+    const movementsHTML = `<div class="transaction-movements">
+    <div class="transaction">
+      <span class="${transactionType} transaction-type">${
+      index + 1
+    } ${transactionType}</span>
+      <span class="transaction-date">12/05/2022</span>
+    </div>
+    <div class="transaction-amount">${mov}</div>
+  </div>`;
+    movementsContainer.insertAdjacentHTML("afterbegin", movementsHTML);
   });
-})();
+};
 
-Arrays
-const accountHistory = [
-  200, 100, 4000, 2200, 1200, -200, 0, -3000, 444, -22, -1112,
-];
-// Arrays
-const balanceHistoryEl = document.querySelector(".balance-history_section");
-for (const transaction of accountHistory) {
-  if (transaction > 0) {
-    const printDetails = `You have deposit $ ${transaction}`;
-    const transactionEl = document.createElement("div");
-    transactionEl.textContent = printDetails;
-    balanceHistoryEl.append(transactionEl);
-  } else {
-    const printDetails = `You have withdrawan $ ${transaction}`;
-    const transactionEl = document.createElement("div");
-    transactionEl.textContent = printDetails;
-    balanceHistoryEl.append(transactionEl);
-  }
-}
+movementsFunc(accountOne.movements);
+// users
 
-// total balance
-document.querySelector(
-  ".total-balance"
-).textContent = `Remaining Balance: $${accountHistory.reduce((sum, value) => {
-  return sum + value;
-}, 0)} `;
-// total balance
+// Bankist Project

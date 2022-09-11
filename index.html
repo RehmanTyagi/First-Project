@@ -1,38 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-  <link>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
-      rel="stylesheet">
-    <script src="main.js" defer></script>
-  </head>
-  <body>
-    <nav class="navbar">
-      <p>Log in to get Started</p>
-      <h1 class="header-logo">London <span>Bank</span></h1>
-      <form action="#" class="user-login_area">
-        <input placeholder="USERNAME" type="text" class="username">
-        <input placeholder="PIN" type="password" class="userPin">
-        <button class="submit-credentials"><span class="material-icons-outlined">
-          login
-          </span></button>
-      </form>
-    </nav>
+<link>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BhuraBank</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<script src="main.js" defer></script>
+</head>
 
-    <!-- Application -->
-    <main class="app">
-      <div class="balance">
-        <div class="balance-status">
-          <p>Current Balance</p>
-          <p class="date">As of <span>00/00/0000, 00:00</span></p>
-        </div>
-        <p class="available-balance">00 <span>$</span></p>
+<body>
+  <nav class="navbar">
+    <p>Log in to get Started</p>
+    <h1 class="header-logo">Bohraay <span>Bank</span></h1>
+    <form action="#" class="user-login_area">
+      <input placeholder="USERNAME" type="text" class="username">
+      <input placeholder="PIN" type="password" class="userPin">
+      <button class="submit-credentials"><span class="material-icons-outlined">
+          login
+        </span></button>
+    </form>
+  </nav>
+
+  <!-- Application -->
+  <main class="app">
+
+    <div class="balance">
+      <div class="balance-status">
+        <p>Balance</p>
+        <p class="date">As of <span>00/00/0000, 00:00</span></p>
       </div>
-    </main>
-    <!-- Application -->
-  </body>
+      <p class="available-balance">00 <span>$</span></p>
+    </div>
+
+    <div class="movements"></div>
+
+    <div class="user-actions">
+      <div class="feature">
+        <h3>Transfer Money</h3>
+        <div class="inputs">
+          <span>
+            <input type="text">
+            <p>Receiver Name</p>
+          </span>
+          <span>
+            <input type="number">
+            <p>Payable Amount</p>
+          </span>
+        </div>
+        <button class="user-buttons send-money">Send</button>
+      </div>
+      <div class="feature">
+        <h3>Request Loan</h3>
+        <div class="inputs">
+          <span>
+            <input type="number">
+            <p>Amount</p>
+          </span>
+        </div>
+        <button class="user-buttons request-loan">Request</button>
+      </div>
+      <div class="feature">
+        <h3>Deactivate Account</h3>
+        <div class="inputs">
+          <span>
+            <input type="text">
+            <p>Username</p>
+          </span>
+          <span>
+            <input type="number">
+            <p>PIN</p>
+          </span>
+        </div>
+        <button class="user-buttons deactivate-account">Deactivate</button>
+      </div>
+    </div>
+    <div class="in_out__interest">
+      <div class="user-cashflow">
+        <span class="cashflow">
+          <span class="cashflow-title">IN</span>
+          <span>29993</span>
+        </span>
+        <span class="cashflow">
+          <span class="cashflow-title">OUT</span>
+          <span>29993</span>
+        </span>
+        <span class="cashflow">
+          <span class="cashflow-title">INTEREST</span>
+          <span>29993</span>
+        </span>
+        <span class="sort-btn">
+          <span class="material-icons-outlined">filter_list</span>SORT
+        </span>
+      </div>
+      <div class="logout-timer">
+        <span class="logout-string">You will be logged out in <i>10</i> Minutes</span>
+      </div>
+    </div>
+  </main>
+  <!-- Application -->
+</body>
+
 </html>
