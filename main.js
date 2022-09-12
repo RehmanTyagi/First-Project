@@ -258,12 +258,15 @@ const movementsFunc = function (movements) {
     <div class="transaction-amount">${mov}</div>
   </div>`
     movementsContainer.insertAdjacentHTML("afterbegin", movementsHTML)
-    const CurrentBalance = movements.filter(function (mov) {
-      return mov > 0
-    })
-    let balance = CurrentBalance.reduce((sum, item) => (sum += item))
+
+    const deposit = movements.filter((mov) => mov > 0)
+
+    let balance = deposit.reduce((sum, item) => (sum += item))
     availableBalance.innerHTML = `$${balance}`
   })
+
+  const withdrawal = movements.filter((mov) => mov < 0)
+  console.log(withdrawal)
 }
 movementsFunc(accountOne.movements)
 
