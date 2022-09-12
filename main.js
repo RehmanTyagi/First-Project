@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 // const greetFunc = function (greeting) {
 //   return function (userName) {
@@ -167,48 +167,87 @@
 // }, 0)} `;
 // total balance
 
+// Arrays first challenge
+// const testCaseOne = {
+//   JuliasData: [3, 5, 2, 12, 7],
+//   KatesData: [4, 1, 15, 8, 3],
+// };
+// const testCaseTwo = {
+//   JuliasData: [9, 16, 6, 8, 3],
+//   KatesData: [10, 5, 6, 1, 4],
+// };
+
+// const checkDogs = function (dogsJulia, dogsKate) {
+//   // console.log(dogsJulia);
+//   const shallowCopy = dogsJulia;
+//   shallowCopy.splice(0, 1);
+//   shallowCopy.splice(-2);
+//   // console.log(shallowCopy);
+
+//   const filterdData = [...dogsJulia, ...dogsKate];
+//   console.log(filterdData);
+
+//   filterdData.forEach(function (ages, index) {
+//     if (ages < 3) {
+//       console.log(
+//         `Puppy number ${index + 1} is still a Puppy with the age of ${ages}`
+//       );
+//     } else {
+//       console.log(
+//         `Dog number ${index + 1} is an Adult with the age of ${ages}`
+//       );
+//     }
+//     console.log(`----------------------------------`);
+//   });
+// };
+// checkDogs(testCaseTwo.JuliasData, testCaseTwo.KatesData);
+// checkDogs(testCaseTwo.JuliasData, testCaseTwo.KatesData);
+// Arrays first challenge
+
 // Bankist Project
 
 // Elements
-const bankistApp = document.querySelector(".app");
-const balance = document.querySelector(".balance");
-const movementsContainer = document.querySelector(".movements");
-const userActions = document.querySelector(".user-actions");
-const in_out__interest = document.querySelector(".in_out__interest");
+const bankistApp = document.querySelector(".app")
+const balance = document.querySelector(".balance")
+const availableBalance = document.querySelector(".available-balance")
+const movementsContainer = document.querySelector(".movements")
+const userActions = document.querySelector(".user-actions")
+const cashflowFeature = document.querySelector(".cashflow_feature")
 // Elements
 
 // users
 const accountOne = {
-  user: "Rehman",
+  user: "Rehman tyagi",
   movements: [
     200, 100, 400, -499, -993, 22, 1222, -2999, 35000, 3933, -222, -111, -2300,
     -2000, 34000,
   ],
   interest: 1.5,
   pin: 555,
-};
+}
 const accountTwo = {
-  user: "shoyaib",
+  user: "shoyaib tyagi",
   movements: [
     200, 100, 4800, -4199, -9913, 22, 12522, -29799, 3500, 39334, -22, -11,
     -200, -200, 3400,
   ],
   interest: 1.5,
   pin: 9971,
-};
+}
 const accountThree = {
-  user: "Mannan",
+  user: "Mannan tyagi",
   movements: [
     500, 100, 600, -4909, -9093, 202, 122, -29909, 3500, 333, -2022, -1011,
     -23100, -20000, 340000,
   ],
   interest: 1.5,
   pin: 1200,
-};
+}
+const totalAccounts = [accountOne, accountThree, accountTwo]
 
 const movementsFunc = function (movements) {
   movements.forEach(function (mov, index) {
-    const transactionType = mov > 0 ? "Deposit" : "Withdrawal";
+    const transactionType = mov > 0 ? "Deposit" : "Withdrawal"
     const movementsHTML = `<div class="transaction-movements">
     <div class="transaction">
       <span class="${transactionType} transaction-type">${
@@ -217,12 +256,28 @@ const movementsFunc = function (movements) {
       <span class="transaction-date">12/05/2022</span>
     </div>
     <div class="transaction-amount">${mov}</div>
-  </div>`;
-    movementsContainer.insertAdjacentHTML("afterbegin", movementsHTML);
-  });
-};
+  </div>`
+    movementsContainer.insertAdjacentHTML("afterbegin", movementsHTML)
+    const CurrentBalance = movements.filter(function (mov) {
+      return mov > 0
+    })
+    let balance = CurrentBalance.reduce((sum, item) => (sum += item))
+    availableBalance.innerHTML = `$${balance}`
+  })
+}
+movementsFunc(accountOne.movements)
 
-movementsFunc(accountOne.movements);
+const usernameCreation = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.user
+      .toLowerCase()
+      .split(" ")
+      .map((shortName) => shortName[0])
+      .join("")
+  })
+}
+usernameCreation(totalAccounts)
+// console.log(totalAccounts)
 // users
 
 // Bankist Project
