@@ -165,4 +165,13 @@ body {
   color: var(--white-color);
   background: var(--primary-color);
 }
+.user-income {
+  color: green;
+}
+.redeem {
+  color: red;
+}
+.user-interest {
+  color: darkblue;
+}
 /* main */

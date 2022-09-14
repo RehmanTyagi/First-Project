@@ -204,6 +204,41 @@
 // checkDogs(testCaseTwo.JuliasData, testCaseTwo.KatesData);
 // Arrays first challenge
 
+// reduce method
+// const max = accountOne.movements.reduce((acc, mov) => {
+//   if (acc > mov) return acc
+//   else return mov
+// }, accountOne.movements[0])
+
+// console.log(max)
+// console.log(accountOne.movements)
+
+// function calcAverageHumanAge(dogAge) {
+//   const humanAge = dogAge.map((age) => (age <= 2 ? 2 * age : 16 + age * 4))
+//   const adults = humanAge.filter((age) => age >= 18)
+
+//   const average = adults.reduce((acc, value) => acc + value, 0) / adults.length
+//   return average
+// }
+
+// const averageData1 = calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3])
+// const averageData2 = calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4])
+
+// console.log(averageData1, averageData2)
+
+// coding challenge #3
+// const calcAverageHumanAge = (dogAge) => {
+//   const humanAge = dogAge
+//     .map((age) => (age <= 2 ? 2 * age : 16 + age * 4))
+//     .filter((adults) => adults >= 18)
+//     .reduce((totalAges, age, i, arr) => totalAges + age / arr.length, 0)
+//   return humanAge
+// }
+
+// console.log(calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]))
+// console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]))
+// coding challenge #3
+
 // Bankist Project
 
 // Elements
@@ -255,22 +290,17 @@ const movementsFunc = function (movements) {
     } ${transactionType}</span>
       <span class="transaction-date">12/05/2022</span>
     </div>
-    <div class="transaction-amount">${mov}</div>
+    <div class="transaction-amount">$${mov}</div>
   </div>`
     movementsContainer.insertAdjacentHTML("afterbegin", movementsHTML)
-
-    const deposit = movements.filter((mov) => mov > 0)
-
-    let balance = deposit.reduce((sum, item) => (sum += item))
-    availableBalance.innerHTML = `$${balance}`
   })
 
-  const withdrawal = movements.filter((mov) => mov < 0)
-  console.log(withdrawal)
+  let balance = movements.reduce((acc, mov) => acc + mov, 0)
+  availableBalance.innerHTML = `$${balance}`
 }
 movementsFunc(accountOne.movements)
 
-const usernameCreation = function (accs) {
+const userNameCreation = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.user
       .toLowerCase()
@@ -279,8 +309,28 @@ const usernameCreation = function (accs) {
       .join("")
   })
 }
-usernameCreation(totalAccounts)
-// console.log(totalAccounts)
+userNameCreation(totalAccounts)
 // users
 
+const displayUserSummary = function (movements) {
+  const income = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, item) => acc + item, 0)
+  document.querySelector(".user-income").textContent = `IN $${income}`
+
+  const redeem = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, item) => acc + item, 0)
+  document.querySelector(".redeem").textContent = `OUT $${Math.abs(redeem)}`
+
+  const interest = movements
+    .filter((deposit) => deposit > 0)
+    .map((deposit) => (deposit * 1.2) / 100)
+    .filter((int) => {
+      return int >= 1
+    })
+    .reduce((int, value) => int + value, 0)
+  document.querySelector(".user-interest").textContent = `INTEREST $${interest}`
+}
+displayUserSummary(accountOne.movements)
 // Bankist Project
