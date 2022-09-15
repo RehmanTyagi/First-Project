@@ -248,6 +248,17 @@ const availableBalance = document.querySelector(".available-balance")
 const movementsContainer = document.querySelector(".movements")
 const userActions = document.querySelector(".user-actions")
 const cashflowFeature = document.querySelector(".cashflow_feature")
+const loginBTN = document.querySelector(".submit-credentials")
+const userNameInput = document.querySelector(".username")
+const passWordInput = document.querySelector(".userPin")
+const TransferBtn = document.querySelector(".send-money")
+const receiverName = document.querySelector(".receiver-name")
+const transferAmount = document.querySelector(".transfer-amount")
+const deleteUserName = document.querySelector(".del-acc-user")
+const deleteUserPin = document.querySelector(".del-acc-pin")
+const deleteAccountBtn = document.querySelector(".deactivate-account")
+const LoanRequestBtn = document.querySelector(".request-loan")
+const LoanRequestInput = document.querySelector(".loan-request_input")
 // Elements
 
 // users
@@ -257,8 +268,8 @@ const accountOne = {
     200, 100, 400, -499, -993, 22, 1222, -2999, 35000, 3933, -222, -111, -2300,
     -2000, 34000,
   ],
-  interest: 1.5,
-  pin: 555,
+  interest: 2,
+  pin: 5555,
 }
 const accountTwo = {
   user: "shoyaib tyagi",
@@ -266,7 +277,7 @@ const accountTwo = {
     200, 100, 4800, -4199, -9913, 22, 12522, -29799, 3500, 39334, -22, -11,
     -200, -200, 3400,
   ],
-  interest: 1.5,
+  interest: 3,
   pin: 9971,
 }
 const accountThree = {
@@ -278,10 +289,11 @@ const accountThree = {
   interest: 1.5,
   pin: 1200,
 }
+
 const totalAccounts = [accountOne, accountThree, accountTwo]
 
-const movementsFunc = function (movements) {
-  movements.forEach(function (mov, index) {
+const movementsFunc = function (acc) {
+  acc.movements.forEach(function (mov, index) {
     const transactionType = mov > 0 ? "Deposit" : "Withdrawal"
     const movementsHTML = `<div class="transaction-movements">
     <div class="transaction">
@@ -290,16 +302,14 @@ const movementsFunc = function (movements) {
     } ${transactionType}</span>
       <span class="transaction-date">12/05/2022</span>
     </div>
-    <div class="transaction-amount">$${mov}</div>
+    <div class="transaction-amount">$${Math.abs(mov)}</div>
   </div>`
     movementsContainer.insertAdjacentHTML("afterbegin", movementsHTML)
   })
 
-  let balance = movements.reduce((acc, mov) => acc + mov, 0)
-  availableBalance.innerHTML = `$${balance}`
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0)
+  availableBalance.innerHTML = `$${acc.balance}`
 }
-movementsFunc(accountOne.movements)
-
 const userNameCreation = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.user
@@ -312,25 +322,111 @@ const userNameCreation = function (accs) {
 userNameCreation(totalAccounts)
 // users
 
-const displayUserSummary = function (movements) {
-  const income = movements
+const displayUserSummary = function (acc) {
+  const income = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, item) => acc + item, 0)
   document.querySelector(".user-income").textContent = `IN $${income}`
 
-  const redeem = movements
+  const redeem = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, item) => acc + item, 0)
   document.querySelector(".redeem").textContent = `OUT $${Math.abs(redeem)}`
 
-  const interest = movements
+  const interest = acc.movements
     .filter((deposit) => deposit > 0)
-    .map((deposit) => (deposit * 1.2) / 100)
+    .map((deposit) => Math.floor((deposit * acc.interest) / 100))
     .filter((int) => {
       return int >= 1
     })
     .reduce((int, value) => int + value, 0)
   document.querySelector(".user-interest").textContent = `INTEREST $${interest}`
 }
-displayUserSummary(accountOne.movements)
+
+// user dashboard data
+function updateUI(acc) {
+  movementsFunc(acc)
+  displayUserSummary(acc)
+}
+
+// User login engine
+
+let loggedUser
+loginBTN.addEventListener("click", function () {
+  loggedUser = totalAccounts.find((acc) => acc.username === userNameInput.value)
+
+  if (loggedUser?.pin === Number(passWordInput.value)) {
+    // welcoming message
+    document.querySelector(".welcome-message").textContent = `Welcome Back, ${
+      loggedUser.user.split(" ")[0]
+    }`
+
+    // clear input forms
+    userNameInput.value = passWordInput.value = ""
+    passWordInput.blur()
+
+    // display user dashboard
+    document.querySelector(".app").style.opacity = 1
+  } else {
+    alert("please enter correct Pin and Username")
+    userNameInput.value = passWordInput.value = ""
+  } // upadte user dashboard
+  updateUI(loggedUser)
+})
+// Money Transfer feature
+TransferBtn.addEventListener("click", function () {
+  const amount = transferAmount.value
+  const Receiver = totalAccounts.find(
+    (acc) => acc.username === receiverName.value
+  )
+  if (
+    amount > 0 &&
+    Receiver &&
+    loggedUser.balance >= transferAmount.value &&
+    Receiver.username !== loggedUser.username &&
+    transferAmount.value > 0
+  ) {
+    // success alert box
+    alert("Money has Transfered")
+
+    // user tranfers balance
+    loggedUser.movements.push(Number(-amount))
+    Receiver.movements.push(Number(amount))
+
+    // upadte user dashboard
+    updateUI(loggedUser)
+  } else {
+    if (!Receiver?.username) alert("user does not exist")
+    else if (transferAmount.value > loggedUser.balance)
+      alert("Amount is grater than your balance")
+  }
+  if (transferAmount.value <= 0 || loggedUser.username === Receiver.username)
+    alert("Amount is not transferrable")
+})
+// delete account feature
+deleteAccountBtn.addEventListener("click", function () {
+  if (
+    loggedUser.username === deleteUserName.value &&
+    loggedUser.pin === Number(deleteUserPin.value)
+  ) {
+    const indexOfAccount = totalAccounts.findIndex(
+      (acc) => acc.username === loggedUser.username
+    )
+
+    totalAccounts.splice(indexOfAccount, 1)
+    document.querySelector(".app").style.opacity = 0
+  }
+})
+// Loan requesting feature
+LoanRequestBtn.addEventListener("click", function () {
+  const LoanAmount = Number(LoanRequestInput.value)
+  if (LoanAmount <= 5000 && LoanAmount > 0) {
+    loggedUser.movements.push(LoanAmount)
+    alert("Loan Amount Added")
+    // update UI
+    updateUI(loggedUser)
+  } else alert("Value is not considerable")
+  if (LoanAmount > 5000) alert("Amount is greater than your limit")
+})
+
 // Bankist Project
