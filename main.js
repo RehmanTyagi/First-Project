@@ -22,13 +22,13 @@
 // const moviesTicket = {
 //   moviesName: "Spiderman No Way Home",
 //   bookings: [],
-//   book(SeatNumber, userName) {
+//   book(Seat+, userName) {
 //     console.log(
-//       `${userName} has booked the ticket of ${this.moviesName} with the Seat No (${SeatNumber})`
+//       `${userName} has booked the ticket of ${this.moviesName} with the Seat No (${Seat+})`
 //     );
 //     this.bookings.push({
 //       Movie: `${this.moviesName}`,
-//       SeatNumber,
+//       Seat+,
 //       userName,
 //     });
 
@@ -98,7 +98,7 @@
 //   answers: new Array(4).fill(0),
 //   registerNewAnswer() {
 //     // get Answer
-//     const answer = Number(
+//     const answer = +(
 //       prompt(
 //         `${this.question}\n${this.options.join("\n")}\n (Write option number)`
 //       )
@@ -239,6 +239,72 @@
 // console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]))
 // coding challenge #3
 
+// // arrays section last challenge
+
+// // testData:
+
+// const dogs = [
+//   { weight: 22, curFood: 250, owners: ["Alice", "Bob"] },
+//   { weight: 8, curFood: 200, owners: ["Matilda"] },
+//   { weight: 13, curFood: 275, owners: ["Sarah", "John"] },
+//   { weight: 32, curFood: 340, owners: ["Michael"] },
+// ]
+
+// // recommended food creating
+// dogs.forEach((dog) => {
+//   dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28)
+// })
+// console.log(dogs)
+
+// // Sarah's dog eating behaviour
+// const dog = dogs.find((dog) => dog.owners.includes("Sarah"))
+// console.log(dog)
+
+// console.log(
+//   dog.curFood <= dog.recommendedFood
+//     ? "Sarah's dog is eating too little"
+//     : "Sarah's dog is eating too much"
+// )
+
+// // list of owners who's dog eat too much
+// const ownerEatTooMuch = dogs
+//   .filter((dogOwner) => dogOwner.curFood > dogOwner.recommendedFood)
+//   .flatMap((dog) => dog.owners)
+
+// // list of owners who's dog eat too little
+// const ownerEatTooLittle = dogs
+//   .filter((dogOwner) => dogOwner.curFood < dogOwner.recommendedFood)
+//   .flatMap((dog) => dog.owners)
+
+// console.log(
+//   `${ownerEatTooMuch.join(
+//     " and "
+//   )}'s dogs eat too much, ${ownerEatTooLittle.join(
+//     " and "
+//   )}'s dogs eat too little`
+// )
+
+// // some dogs who's eat right amoun of food
+// console.log(
+//   dogs.some(
+//     (dogs) =>
+//       dogs.curFood > dogs.recommendedFood * 0.9 &&
+//       dogs.curFood < dogs.recommendedFood * 1.1
+//   )
+// )
+
+// // some dogs list who's eat right amoun of food
+// const checkWellEatingDogs = (dogs) =>
+//   dogs.curFood > dogs.recommendedFood * 0.9 &&
+//   dogs.curFood < dogs.recommendedFood * 1.1
+
+// console.log(dogs.filter(checkWellEatingDogs))
+
+// const SortedListOfDogs = dogs.sort(
+//   (a, b) => a.recommendedFood - b.recommendedFood
+// )
+// console.log(SortedListOfDogs)
+
 // Bankist Project
 
 // Elements
@@ -259,6 +325,7 @@ const deleteUserPin = document.querySelector(".del-acc-pin")
 const deleteAccountBtn = document.querySelector(".deactivate-account")
 const LoanRequestBtn = document.querySelector(".request-loan")
 const LoanRequestInput = document.querySelector(".loan-request_input")
+const sortBtn = document.querySelector(".sort-btn")
 // Elements
 
 // users
@@ -289,11 +356,16 @@ const accountThree = {
   interest: 1.5,
   pin: 1200,
 }
-
+// All accounts
 const totalAccounts = [accountOne, accountThree, accountTwo]
 
-const movementsFunc = function (acc) {
-  acc.movements.forEach(function (mov, index) {
+// user transactions
+const movementsFunc = function (acc, sorted = false) {
+  const userMov = sorted
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements
+
+  userMov.forEach(function (mov, index) {
     const transactionType = mov > 0 ? "Deposit" : "Withdrawal"
     const movementsHTML = `<div class="transaction-movements">
     <div class="transaction">
@@ -308,7 +380,7 @@ const movementsFunc = function (acc) {
   })
 
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0)
-  availableBalance.innerHTML = `$${acc.balance}`
+  availableBalance.innerHTML = `$${acc.balance.toFixed(2)}`
 }
 const userNameCreation = function (accs) {
   accs.forEach(function (acc) {
@@ -319,19 +391,24 @@ const userNameCreation = function (accs) {
       .join("")
   })
 }
-userNameCreation(totalAccounts)
 // users
+userNameCreation(totalAccounts)
 
+// user summary feature
 const displayUserSummary = function (acc) {
   const income = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, item) => acc + item, 0)
-  document.querySelector(".user-income").textContent = `IN $${income}`
+  document.querySelector(".user-income").textContent = `IN $${Math.floor(
+    income
+  )}`
 
   const redeem = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, item) => acc + item, 0)
-  document.querySelector(".redeem").textContent = `OUT $${Math.abs(redeem)}`
+  document.querySelector(".redeem").textContent = `OUT $${Math.abs(
+    Math.floor(redeem)
+  )}`
 
   const interest = acc.movements
     .filter((deposit) => deposit > 0)
@@ -340,22 +417,24 @@ const displayUserSummary = function (acc) {
       return int >= 1
     })
     .reduce((int, value) => int + value, 0)
-  document.querySelector(".user-interest").textContent = `INTEREST $${interest}`
+  document.querySelector(
+    ".user-interest"
+  ).textContent = `INTEREST $${Math.floor(interest)}`
 }
 
 // user dashboard data
 function updateUI(acc) {
-  movementsFunc(acc)
   displayUserSummary(acc)
+  movementsFunc(acc)
 }
-
-// User login engine
 
 let loggedUser
 loginBTN.addEventListener("click", function () {
-  loggedUser = totalAccounts.find((acc) => acc.username === userNameInput.value)
+  loggedUser = totalAccounts.find(
+    (acc) => acc?.username === userNameInput?.value
+  )
 
-  if (loggedUser?.pin === Number(passWordInput.value)) {
+  if (loggedUser.pin === +passWordInput.value) {
     // welcoming message
     document.querySelector(".welcome-message").textContent = `Welcome Back, ${
       loggedUser.user.split(" ")[0]
@@ -390,8 +469,8 @@ TransferBtn.addEventListener("click", function () {
     alert("Money has Transfered")
 
     // user tranfers balance
-    loggedUser.movements.push(Number(-amount))
-    Receiver.movements.push(Number(amount))
+    loggedUser.movements.push(+-amount)
+    Receiver.movements.push(+amount)
 
     // upadte user dashboard
     updateUI(loggedUser)
@@ -407,7 +486,7 @@ TransferBtn.addEventListener("click", function () {
 deleteAccountBtn.addEventListener("click", function () {
   if (
     loggedUser.username === deleteUserName.value &&
-    loggedUser.pin === Number(deleteUserPin.value)
+    loggedUser.pin === +deleteUserPin.value
   ) {
     const indexOfAccount = totalAccounts.findIndex(
       (acc) => acc.username === loggedUser.username
@@ -419,7 +498,7 @@ deleteAccountBtn.addEventListener("click", function () {
 })
 // Loan requesting feature
 LoanRequestBtn.addEventListener("click", function () {
-  const LoanAmount = Number(LoanRequestInput.value)
+  const LoanAmount = +LoanRequestInput.value
   if (LoanAmount <= 5000 && LoanAmount > 0) {
     loggedUser.movements.push(LoanAmount)
     alert("Loan Amount Added")
@@ -427,6 +506,12 @@ LoanRequestBtn.addEventListener("click", function () {
     updateUI(loggedUser)
   } else alert("Value is not considerable")
   if (LoanAmount > 5000) alert("Amount is greater than your limit")
+})
+// transaction sorting feature
+let sortStatus = false
+sortBtn.addEventListener("click", function () {
+  movementsFunc(loggedUser, !sortStatus)
+  sortStatus = !sortStatus
 })
 
 // Bankist Project
