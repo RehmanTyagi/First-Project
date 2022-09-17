@@ -326,62 +326,121 @@ const deleteAccountBtn = document.querySelector(".deactivate-account")
 const LoanRequestBtn = document.querySelector(".request-loan")
 const LoanRequestInput = document.querySelector(".loan-request_input")
 const sortBtn = document.querySelector(".sort-btn")
+const BalanceDate = document.querySelector(".date-of_balance")
+
 // Elements
 
 // users
 const accountOne = {
   user: "Rehman tyagi",
-  movements: [
-    200, 100, 400, -499, -993, 22, 1222, -2999, 35000, 3933, -222, -111, -2300,
-    -2000, 34000,
-  ],
+  movements: [200, 100, 400, -499, 35000, 3933, -222, -111],
   interest: 2,
   pin: 5555,
+  transactionDates: [
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-02T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2022-01-25T14:18:46.235Z",
+    "2022-09-14T16:33:06.386Z",
+    "2022-09-12T14:43:26.374Z",
+    "2022-09-10T18:49:59.371Z",
+    "2022-09-16T12:01:20.894Z",
+  ],
+  locale: "hi-IN",
+  currency: "INR",
 }
 const accountTwo = {
   user: "shoyaib tyagi",
-  movements: [
-    200, 100, 4800, -4199, -9913, 22, 12522, -29799, 3500, 39334, -22, -11,
-    -200, -200, 3400,
-  ],
+  movements: [200, 100, 4800, -4199, -9913, 22, 12522, -29799],
   interest: 3,
   pin: 9971,
+  transactionDates: [
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-04-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-07-26T12:01:20.894Z",
+  ],
+  locale: "en-UK",
+  currency: "GBP",
 }
 const accountThree = {
   user: "Mannan tyagi",
-  movements: [
-    500, 100, 600, -4909, -9093, 202, 122, -29909, 3500, 333, -2022, -1011,
-    -23100, -20000, 340000,
-  ],
+  movements: [122, -29909, 3500, 333, -2022, -1011, -23100, -20000],
   interest: 1.5,
   pin: 1200,
+  transactionDates: [
+    "2019-11-18T21:31:17.178Z",
+    "2019-12-23T07:42:02.383Z",
+    "2020-01-28T09:15:04.904Z",
+    "2020-04-01T10:17:24.185Z",
+    "2020-05-08T14:11:59.604Z",
+    "2020-05-27T17:01:17.194Z",
+    "2020-07-11T23:36:17.929Z",
+    "2020-07-12T10:51:36.790Z",
+  ],
+  locale: "en-US",
+  currency: "USD",
 }
 // All accounts
 const totalAccounts = [accountOne, accountThree, accountTwo]
 
+// intl date exp
+// const intlFormat = new Intl.DateTimeFormat("en-IN")
+// console.log(Intl.DateTimeFormat())
+
+// Transaction DatesFormat
+const calcDaysAgo = function (date, locale) {
+  // calcDate Engine
+  const calcdays = (day1, day2) =>
+    Math.round(Math.abs((day2 - day1) / (1000 * 60 * 60 * 24)))
+  const daysPassed = calcdays(new Date(), date)
+  // console.log(date)
+  if (daysPassed === 0) return "Today"
+  if (daysPassed === 1) return "Yesterday"
+  if (daysPassed <= 7) return `${daysPassed} Day's ago`
+
+  // transaction dates
+  return new Intl.DateTimeFormat(locale).format(date)
+}
+
 // user transactions
 const movementsFunc = function (acc, sorted = false) {
   const userMov = sorted
-    ? acc.movements.slice().sort((a, b) => a - b)
+    ? acc.movements.slice().sort((a, b) => b - a)
     : acc.movements
 
   userMov.forEach(function (mov, index) {
+    // Dates
+    const paymentDate = new Date(loggedUser.transactionDates[index])
+    const DisplayDate = calcDaysAgo(paymentDate, loggedUser.locale)
     const transactionType = mov > 0 ? "Deposit" : "Withdrawal"
     const movementsHTML = `<div class="transaction-movements">
     <div class="transaction">
       <span class="${transactionType} transaction-type">${
       index + 1
     } ${transactionType}</span>
-      <span class="transaction-date">12/05/2022</span>
+      <span class="transaction-date">${DisplayDate}</span>
     </div>
-    <div class="transaction-amount">$${Math.abs(mov)}</div>
+    <div class="transaction-amount">${FormatCur(
+      mov,
+      loggedUser.locale,
+      loggedUser.currency
+    )}</div>
   </div>`
     movementsContainer.insertAdjacentHTML("afterbegin", movementsHTML)
+    acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0)
+    availableBalance.innerHTML = `${FormatCur(
+      acc.balance,
+      loggedUser.locale,
+      loggedUser.currency
+    )}`
   })
-
-  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0)
-  availableBalance.innerHTML = `$${acc.balance.toFixed(2)}`
 }
+// username creating
 const userNameCreation = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.user
@@ -399,15 +458,19 @@ const displayUserSummary = function (acc) {
   const income = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, item) => acc + item, 0)
-  document.querySelector(".user-income").textContent = `IN $${Math.floor(
-    income
+  document.querySelector(".user-income").textContent = `IN ${FormatCur(
+    Math.floor(income),
+    acc.locale,
+    acc.currency
   )}`
 
   const redeem = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, item) => acc + item, 0)
-  document.querySelector(".redeem").textContent = `OUT $${Math.abs(
-    Math.floor(redeem)
+  document.querySelector(".redeem").textContent = `OUT ${FormatCur(
+    Math.floor(redeem),
+    acc.locale,
+    acc.currency
   )}`
 
   const interest = acc.movements
@@ -417,9 +480,11 @@ const displayUserSummary = function (acc) {
       return int >= 1
     })
     .reduce((int, value) => int + value, 0)
-  document.querySelector(
-    ".user-interest"
-  ).textContent = `INTEREST $${Math.floor(interest)}`
+  document.querySelector(".user-interest").textContent = `INTEREST ${FormatCur(
+    Math.floor(interest),
+    acc.locale,
+    acc.currency
+  )}`
 }
 
 // user dashboard data
@@ -443,6 +508,22 @@ loginBTN.addEventListener("click", function () {
     // clear input forms
     userNameInput.value = passWordInput.value = ""
     passWordInput.blur()
+
+    // Balance Date (day/month/year/time)
+    setInterval(function () {
+      const EventDate = new Date()
+      const options = {
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        weekday: "long",
+        day: "numeric",
+      }
+      BalanceDate.textContent = new Intl.DateTimeFormat(
+        loggedUser.locale,
+        options
+      ).format(EventDate)
+    }, 500)
 
     // display user dashboard
     document.querySelector(".app").style.opacity = 1
@@ -471,6 +552,11 @@ TransferBtn.addEventListener("click", function () {
     // user tranfers balance
     loggedUser.movements.push(+-amount)
     Receiver.movements.push(+amount)
+
+    // Payment Transfer Date
+    loggedUser.transactionDates.push(new Date().toISOString())
+    Receiver.transactionDates.push(new Date().toISOString())
+    // console.log(loggedUser)
 
     // upadte user dashboard
     updateUI(loggedUser)
@@ -502,6 +588,10 @@ LoanRequestBtn.addEventListener("click", function () {
   if (LoanAmount <= 5000 && LoanAmount > 0) {
     loggedUser.movements.push(LoanAmount)
     alert("Loan Amount Added")
+
+    // Payment added Date
+    loggedUser.transactionDates.push(new Date().toISOString())
+
     // update UI
     updateUI(loggedUser)
   } else alert("Value is not considerable")
@@ -513,5 +603,12 @@ sortBtn.addEventListener("click", function () {
   movementsFunc(loggedUser, !sortStatus)
   sortStatus = !sortStatus
 })
+// CurrencyFormatFunc
+const FormatCur = function (value, locale, currency) {
+  return Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value)
+}
 
 // Bankist Project
